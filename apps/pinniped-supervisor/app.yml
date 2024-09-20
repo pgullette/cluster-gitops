@@ -1,5 +1,5 @@
 #@ load("@ytt:data", "data")
-#@ if/end false:
+#@ if/end False:
 ---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
