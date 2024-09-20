@@ -1,14 +1,15 @@
 #@ load("@ytt:data", "data")
+#@ if/end False:
 ---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 
 metadata:
   name: pinniped-concierge-app
-  namespace: #@ data.values.kapp_controller.namespace
+  namespace: #@ data.values.bootstrap.namespace
 
 spec:
-  serviceAccountName: #@ data.values.kapp_controller.service_account
+  serviceAccountName: #@ data.values.bootstrap.service_account
   
   fetch:
     - http:
