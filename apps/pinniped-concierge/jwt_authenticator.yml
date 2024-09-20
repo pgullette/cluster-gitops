@@ -1,0 +1,14 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: authentication.concierge.pinniped.dev/v1alpha1
+kind: JWTAuthenticator
+metadata:
+  name: pinniped-jwt-authenticator
+spec:
+  issuer: #@ "https://pinniped.tap.{}.shepherd.lease".format(data.values.shepherd_subdomain)
+  audience: concierge
+  tls:
+    certificateAuthorityDataSource:
+      kind: Secret
+      name: pinniped-supervisor-tls-cert
+      key: ca.crt
