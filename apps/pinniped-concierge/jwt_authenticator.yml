@@ -5,7 +5,7 @@ kind: JWTAuthenticator
 metadata:
   name: pinniped-jwt-authenticator
 spec:
-  issuer: #@ "https://pinniped.tap.{}.shepherd.lease".format(data.values.shepherd_subdomain)
+  issuer: #@ "https://" + data.values.pinniped.supervisor.fqdn
   audience: concierge
   tls:
     certificateAuthorityDataSource:
