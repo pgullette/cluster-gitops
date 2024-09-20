@@ -6,7 +6,7 @@ kapp_controller:
 
 pinniped:
   supervisor:
-    fqdn: pinniped.tap..shepherd.lease # fqdn for supervisor
+    fqdn: pinniped.tap.z87954a14.shepherd.lease # fqdn for supervisor
     version: v0.33.0 # pinniped supervisor tag version to install
 
   concierge:

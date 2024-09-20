@@ -16,16 +16,18 @@ spec:
         ref: origin/main
         secretRef:
           name: cluster-gitops-creds
-        subPath: apps
 
   template:
     - sops:
         age:
           privateKeysSecretRef:
             name: age-key
-            
+
     - ytt:
         ignoreUnknownComments: true
+        paths:
+          - globals/values
+          - apps
   
   deploy:
     - kapp: {}
