@@ -8,7 +8,7 @@ metadata:
   namespace: #@ data.values.bootstrap.namespace
 
 spec:
-  serviceAccountName: #@ data.values.bootstrap.service_account
+  serviceAccountName: cluster-gitops
   
   fetch:
     - git:
