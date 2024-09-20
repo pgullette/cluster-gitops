@@ -1,0 +1,13 @@
+#@data/values
+---
+kapp_controller:
+  namespace: kapp-controller # namespace where kapp-controller lives
+  service_account: kapp-controller-sa # service account to use to install apps
+
+pinniped:
+  supervisor:
+    fqdn: pinniped.tap..shepherd.lease # fqdn for supervisor
+    version: v0.33.0 # pinniped supervisor tag version to install
+
+  concierge:
+    version: v0.33.0 # pinniped concierge tag version to install

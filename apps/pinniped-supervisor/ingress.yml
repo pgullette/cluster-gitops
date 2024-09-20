@@ -1,0 +1,31 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pinniped-supervisor
+  namespace: pinniped-supervisor
+spec:
+  ports:
+  - name: pinniped-supervisor
+    port: 8443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app: pinniped-supervisor
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: pinniped-supervisor
+  namespace: pinniped-supervisor
+spec:
+  virtualhost:
+    fqdn: #@ data.values.pinniped.supervisor.fqdn
+    tls:
+      passthrough: true
+  tcpproxy:
+    services:
+    - name: pinniped-supervisor
+      port: 8443

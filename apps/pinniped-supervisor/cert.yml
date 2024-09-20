@@ -1,0 +1,14 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pinniped-supervisor-tls-cert
+  namespace: pinniped-supervisor
+spec:
+  dnsNames:
+  - #@ data.values.pinniped.supervisor.fqdn
+  issuerRef:
+    kind: ClusterIssuer
+    name: tap-ingress-selfsigned
+  secretName: pinniped-supervisor-tls-cert

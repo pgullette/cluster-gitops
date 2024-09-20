@@ -1,0 +1,25 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+
+metadata:
+  name: pinniped-supervisor-app
+  namespace: #@ data.values.kapp_controller.namespace
+
+spec:
+  serviceAccountName: #@ data.values.kapp_controller.service_account
+  
+  fetch:
+    - http:
+        # http and https url are supported;
+        # plain file, tgz and tar types are supported (required)
+        url: #@ "https://get.pinniped.dev/" + data.values.pinniped.supervisor.version + "/install-pinniped-supervisor.yaml"
+
+  template:
+    - ytt:
+        ignoreUnknownComments: true
+  
+  deploy:
+    - kapp: {}
+
