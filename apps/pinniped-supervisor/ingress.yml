@@ -24,7 +24,7 @@ spec:
   virtualhost:
     fqdn: #@ data.values.pinniped.supervisor.fqdn
     tls:
-      passthrough: true
+      secretName: pinniped-supervisor-tls-cert
   tcpproxy:
     services:
     - name: pinniped-supervisor
