@@ -5,15 +5,15 @@ kind: App
 
 metadata:
   name: bootstrap-app
-  namespace: #@ data.values.kapp_controller.namespace
+  namespace: #@ data.values.bootstrap.namespace
 
 spec:
-  serviceAccountName: #@ data.values.kapp_controller.service_account
+  serviceAccountName: #@ data.values.bootstrap.service_account
   
   fetch:
     - git:
-        url: https://github.com/pgullette/cluster-gitops.git
-        ref: origin/main
+        url: #@ data.values.bootstrap.gitops.url
+        ref: #@ data.values.bootstrap.gitops.ref
         secretRef:
           name: cluster-gitops-creds
 

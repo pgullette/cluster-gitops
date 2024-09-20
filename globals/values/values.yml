@@ -1,8 +1,10 @@
 #@data/values
 ---
-kapp_controller:
-  namespace: kapp-controller # namespace where kapp-controller lives
-  service_account: kapp-controller-sa # service account to use to install apps
+bootstrap:
+  namespace: cluster-gitops # primary namespace for bootstrap apps
+  gitops:
+    url: https://github.com/pgullette/cluster-gitops.git
+    ref: origin/main
 
 pinniped:
   supervisor:
