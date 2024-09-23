@@ -8,6 +8,6 @@ bootstrap:
 
 pinniped:
   supervisor:
-    fqdn: pinniped.tap.z87954a14.shepherd.lease # fqdn for supervisor
+    fqdn: pinniped.tap.zd25c130e.shepherd.lease # fqdn for supervisor
 
   concierge: {}
