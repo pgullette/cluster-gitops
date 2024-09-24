@@ -11,11 +11,11 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cluster-gitops
-  namespace: #@ data.values.bootstrap.namespace
+  namespace: cluster-gitops
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cluster-gitops
-  namespace: #@ data.values.bootstrap.namespace
+  namespace: cluster-gitops
