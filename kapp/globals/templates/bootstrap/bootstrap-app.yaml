@@ -5,7 +5,7 @@ kind: App
 
 metadata:
   name: bootstrap-app
-  namespace: #@ data.values.bootstrap.namespace
+  namespace: cluster-gitops
 
 spec:
   serviceAccountName: cluster-gitops
@@ -16,6 +16,7 @@ spec:
         ref: #@ data.values.bootstrap.gitops.ref
         secretRef:
           name: cluster-gitops-creds
+        subPath: kapp
 
   template:
     - sops:
@@ -27,7 +28,7 @@ spec:
         ignoreUnknownComments: true
         paths:
           - globals/values
-          - apps
+          - globals/templates/gitops
   
   deploy:
     - kapp: {}

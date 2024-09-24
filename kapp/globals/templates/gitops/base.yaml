@@ -1,0 +1,128 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:assert", "assert")
+#@
+#@ #! Store some default variables to make things cleaner below
+#@ cluster_name = data.values.cluster_name
+#@ gitops_branch = data.values.gitops_branch
+#@ globals = data.values.globals
+#@ cluster = globals.clusters[cluster_name]
+#@
+#@ #! Ensure the current cluster is defined in global data values
+#@ if cluster_name not in globals.clusters:
+#@   msg = "Cluster: {} is not in global clusters. Ensure this cluster is in the globals.clusters object.".format(cluster_name)
+#@   assert.fail(msg)
+#@ end
+#@
+#@ def get_cluster_branch():
+#@   #! Default to gitops_branch provided by cluster configmap
+#@   cluster_branch = gitops_branch
+#@
+#@   #! Use overriden cluster_branch if supplied
+#@   if 'cluster_branch' in cluster:
+#@     cluster_branch = cluster.cluster_branch
+#@   end
+#@
+#@   return cluster_branch
+#@ end
+---
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: cluster-gitops-base
+  namespace: cluster-gitops
+  annotations:
+    kapp.k14s.io/change-group: cluster-gitops-base
+spec:
+  serviceAccountName: cluster-gitops
+  paused: false
+  fetch:
+  #! Fetch entire kapp folder - will choose specific paths below
+  - git:
+      url: #@ globals.gitops.url
+      ref: #@ get_cluster_branch()
+      subPath: kapp
+      secretRef:
+        name: cluster-gitops-creds
+    
+  template:
+  - sops: 
+      age: 
+        privateKeysSecretRef: 
+          name: age-key
+          
+  - ytt:
+      ignoreUnknownComments: true # allow regular comments with just a #
+
+      #! specify global values path, any base apps paths defined
+      #! and any specific subpath if defined
+      paths:
+      - globals/values
+
+      #! Add specific subpath if defined
+      #@ if/end 'base_cluster_subpath' in cluster:
+      - #@ 'clusters/{}/base'.format(cluster.base_cluster_subpath)
+
+      #! Add paths for any base apps defined for this cluster
+      #@ if 'base-apps' in cluster:
+      #@   for app in cluster['base-apps']:
+      #@
+      #!     tap-sync will be its own app below
+      #@     if app == 'tap-sync':
+      #@       continue
+      #@     end
+      #@
+      - #@ 'apps/{}'.format(app)
+      #@   end
+      #@ end
+
+      valuesFrom:
+        #! provided by configmap containing cluster values
+        - configMapRef:
+            name: cluster-gitops-values
+
+  deploy:
+  - kapp: {}
+---
+#! Deploy separate tap-sync app if needed
+#@ if/end 'base-apps' in cluster and 'tap-sync' in cluster['base-apps']:
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: cluster-gitops-base-tap-sync
+  namespace: cluster-gitops
+  annotations:
+    kapp.k14s.io/change-group: cluster-gitops-base-tap-sync
+spec:
+  serviceAccountName: cluster-gitops
+  paused: false
+  fetch:
+  #! Fetch entire kapp folder - will choose specific paths below
+  - git:
+      url: #@ globals.gitops.url
+      ref: #@ get_cluster_branch()
+      subPath: kapp
+      secretRef:
+        name: cluster-gitops-creds
+    
+  template:
+  - sops: 
+      age: 
+        privateKeysSecretRef: 
+          name: age-key
+          
+  - ytt:
+      ignoreUnknownComments: true # allow regular comments with just a #
+
+      #! specify global values path, any base apps paths defined
+      #! and any specific subpath if defined
+      paths:
+      - globals/values
+      - apps/tap-sync
+
+      valuesFrom:
+        #! provided by configmap containing cluster values
+        - configMapRef:
+            name: cluster-gitops-values
+
+  deploy:
+  - kapp: {}
