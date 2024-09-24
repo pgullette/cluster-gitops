@@ -12,8 +12,8 @@ spec:
   
   fetch:
     - git:
-        url: #@ data.values.bootstrap.gitops.url
-        ref: #@ data.values.bootstrap.gitops.ref
+        url: #@ data.values.globals.gitops.url
+        ref: #@ data.values.globals.gitops.ref
         secretRef:
           name: cluster-gitops-creds
         subPath: kapp
@@ -29,6 +29,11 @@ spec:
         paths:
           - globals/values
           - globals/templates/gitops
+        
+        valuesFrom:
+          #! provided by configmap containing cluster values
+          - configMapRef:
+              name: cluster-gitops-values
   
   deploy:
     - kapp: {}

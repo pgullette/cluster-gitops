@@ -3,6 +3,7 @@ set -e
 CLUSTER_NAME=$1
 GITOPS_USERNAME=gitops
 GITOPS_BRANCH=$2
+K8S_RESOURCES=""
 
 # TMP_DIR=$(mktemp -d)
 
@@ -26,39 +27,46 @@ if [ -z "${GITOPS_BRANCH}" ]; then
     exit 1
 fi
 
-echo "all checks passed"
-exit 0
+# Generate bootstrap ns and rbac
+K8S_RESOURCES=$(\
+    ytt --ignore-unknown-comments -f ../kapp/globals/values \
+        -f ../kapp/globals/templates/bootstrap/bootstrap-ns.yaml \
+        -f ../kapp/globals/templates/bootstrap/bootstrap-rbac.yaml \
+)
 
-# Create bootstrap ns and rbac
-ytt --ignore-unknown-comments -f ../kapp/globals/values \
-    -f ../kapp/globals/templates/bootstrap/bootstrap-ns.yaml \
-    -f ../kapp/globals/templates/bootstrap/bootstrap-rbac.yaml \
-    | kubectl apply -f -
+# Generate age-key secret
+K8S_RESOURCES+="\n---\n"$(\
+    kubectl create secret -n cluster-gitops generic age-key \
+        --from-file key.txt=${AGE_KEY} \
+        -o yaml --dry-run=client \
+)
 
-# Create age-key secret
-kubectl create secret -n cluster-gitops generic age-key \
-    --from-file key.txt=${AGE_KEY} \
-    -o yaml --dry-run=server \
-    | kubectl apply -f -
+# Generate gitops credential
+K8S_RESOURCES+="\n---\n"$(\
+    kubectl create secret -n cluster-gitops generic cluster-gitops-creds \
+        --from-literal username=gitops \
+        --from-file password=${GITOPS_TOKEN} \
+        -o yaml --dry-run=client \
+)
 
-# Create gitops credential
-kubectl create secret -n cluster-gitops generic cluster-gitops-creds \
-    --from-literal username=gitops \
-    --from-file password=${GITOPS_TOKEN} \
-    -o yaml --dry-run=server \
-    | kubectl apply -f -
+# Generate cluster data values configmap
+K8S_RESOURCES+="\n---\n"$(\
+    kubectl create configmap -n cluster-gitops cluster-gitops-values \
+        --from-literal cluster_name=${CLUSTER_NAME} \
+        --from-literal gitops_branch=${GITOPS_BRANCH} \
+        -o yaml --dry-run=client \
+)
 
-# Create cluster data values configmap
-kubectl create configmap -n cluster-gitops cluster-gitops-values \
-    --from-literal cluster_name=${CLUSTER_NAME} \
-    --from-literal gitops_branch=${GITOPS_BRANCH} \
-    -o yaml --dry-run=server \
-    | kubectl apply -f -
+# Generate bootstrap app to start gitops process
+K8S_RESOURCES+="\n---\n"$(\
+    ytt --ignore-unknown-comments -f ../kapp/globals/values \
+        -f ../kapp/globals/templates/bootstrap/bootstrap-app.yaml \
+)
 
-# Apply bootstrap app to start gitops process
-ytt --ignore-unknown-comments -f ../kapp/globals/values \
-    -f ../kapp/globals/templates/bootstrap/bootstrap-app.yaml \
-    | kubectl apply -f -
+echo "${K8S_RESOURCES}" > k8s-resources.yaml
+
+# Apply the generated k8s resources as a single kapp app
+echo "${K8S_RESOURCES}" | kapp deploy -a cluster-gitops-bootstrap-resources -y -f -
 
 # Delete temp dir
 # rm -rf ${TMP_DIR}
