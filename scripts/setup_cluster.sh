@@ -50,10 +50,15 @@ K8S_RESOURCES+="\n---\n"$(\
 )
 
 # Generate cluster data values configmap
+cluster_gitops_values=$(cat <<EOF
+cluster_name: $CLUSTER_NAME
+gitops_branch: $GITOPS_BRANCH
+EOF
+)
+
 K8S_RESOURCES+="\n---\n"$(\
     kubectl create configmap -n cluster-gitops cluster-gitops-values \
-        --from-literal cluster_name=${CLUSTER_NAME} \
-        --from-literal gitops_branch=${GITOPS_BRANCH} \
+        --from-literal cluster-gitops-values.yaml="${cluster_gitops_values}" \
         -o yaml --dry-run=client \
 )
 

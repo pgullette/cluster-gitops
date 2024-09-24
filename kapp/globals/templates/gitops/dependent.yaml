@@ -41,7 +41,7 @@ apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
   name: cluster-gitops-dependent
-  namespace: tanzu-continuousdelivery-resources
+  namespace: cluster-gitops
   annotations:
     kapp.k14s.io/change-group: cluster-gitops-dependent
     kapp.k14s.io/change-rule.0: upsert after upserting cluster-gitops-base-apps
