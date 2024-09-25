@@ -56,15 +56,15 @@ globals:
       #########################################################################
       base-apps:
         - tap-sync
-        - pinniped-supervisor
+        
       
       #########################################################################
       # optional
       # list of apps from kapp/apps to install after base-apps
       # use this if apps have some dependency on a base-app
       #########################################################################
-      # dependent-apps:
-      #   - tbs-full-deps
+      dependent-apps:
+        - pinniped-supervisor
 
 pinniped:
   supervisor:
