@@ -6,15 +6,19 @@ globals:
   gitops:
     url: https://github.com/pgullette/cluster-gitops.git
     ref: origin/main
+
+  # Repository location where tap packages have been relocated
+  tap_repo: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/tap-packages
   
   #########################################################################
   # the current version of tap that will be deployed to any tap clusters
   # this WILL cause upgrades to tap and subsequent packages once committed
   #########################################################################
   tap_version: 1.12.0
+  
 
   clusters:
-    paul:
+    cluster-1:
       #########################################################################
       # optional - if not defined, this cluster will use the same tap_version
       # defined at the globals level

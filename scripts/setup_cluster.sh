@@ -68,7 +68,7 @@ K8S_RESOURCES+="\n---\n"$(\
         -f ../kapp/globals/templates/bootstrap/bootstrap-app.yaml \
 )
 
-echo "${K8S_RESOURCES}" > k8s-resources.yaml
+# echo "${K8S_RESOURCES}" > k8s-resources.yaml
 
 # Apply the generated k8s resources as a single kapp app
 echo "${K8S_RESOURCES}" | kapp deploy -a cluster-gitops-bootstrap-resources -y -f -
