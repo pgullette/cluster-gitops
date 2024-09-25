@@ -7,7 +7,7 @@ tap_install:
       
 
       image_registry:
-        project_path: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/
+        project_path: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/
         secret:
           name: registry-credentials
           namespace: tap-install
