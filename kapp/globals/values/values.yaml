@@ -8,7 +8,7 @@ globals:
     ref: origin/main
 
   # Repository location where tap packages have been relocated
-  tap_repo: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/tap-packages
+  tap_repo: tap-sm-docker-prod-local.dmz.packages.broadcom.com/1.12.0/tanzu-application-platform/tap-packages
   
   #########################################################################
   # the current version of tap that will be deployed to any tap clusters
