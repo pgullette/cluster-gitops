@@ -1,38 +1,40 @@
-shared:
-  ingress_domain: tap.z3e829587.shepherd.lease
-  
-  ca_cert_data: ""
-  
+tap_install:
+  values:
+    shared:
+      ingress_domain: tap.z3e829587.shepherd.lease
+      
+      ca_cert_data: ""
+      
 
-  image_registry:
-    project_path: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/
-    secret:
-      name: registry-credentials
-      namespace: tap-install
+      image_registry:
+        project_path: us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/us-west2-docker.pkg.dev/shepherd-v2-environment-1/sh2-isle-3156427-oci-registry/
+        secret:
+          name: registry-credentials
+          namespace: tap-install
 
-ceip_policy_disclosed: true
-profile: full
-supply_chain: testing_scanning
+    ceip_policy_disclosed: true
+    profile: full
+    supply_chain: testing_scanning
 
-accelerator:
-  ingress:
-    include: true
+    accelerator:
+      ingress:
+        include: true
 
-metadata_store:
-  ns_for_export_app_cert: "*"
+    metadata_store:
+      ns_for_export_app_cert: "*"
 
-tap_gui:
-  metadataStoreAutoconfiguration: true
-  app_config:
-    auth:
-      allowGuestAccess: true
-  ingressEnabled: true
-  service_type: ClusterIP
+    tap_gui:
+      metadataStoreAutoconfiguration: true
+      app_config:
+        auth:
+          allowGuestAccess: true
+      ingressEnabled: true
+      service_type: ClusterIP
 
-tap_telemetry:
-  customer_entitlement_account_number: "123456789"
-  installed_for_vmware_internal_use: "true"
+    tap_telemetry:
+      customer_entitlement_account_number: "123456789"
+      installed_for_vmware_internal_use: "true"
 
-grype:
-  namespace: my-apps
-  targetImagePullSecret: registry-credentials
+    grype:
+      namespace: my-apps
+      targetImagePullSecret: registry-credentials
