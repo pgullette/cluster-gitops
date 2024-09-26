@@ -102,7 +102,8 @@ globals:
       # optional
       # list of apps from kapp/apps to install upon cluster creation
       #########################################################################
-      base-apps: []
+      base-apps:
+        - pinniped-supervisor
         # - tap-sync
         # - cluster-secrets
       
@@ -111,8 +112,8 @@ globals:
       # list of apps from kapp/apps to install after base-apps
       # use this if apps have some dependency on a base-app
       #########################################################################
-      dependent-apps:
-        - pinniped-supervisor
+      # dependent-apps:
+      #   - pinniped-supervisor
 
 pinniped:
   supervisor:
