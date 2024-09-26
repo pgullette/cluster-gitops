@@ -71,7 +71,6 @@ spec:
       #! and any dependent apps paths defined
       paths:
       - globals/values
-      - #@ get_cluster_subpath()
 
       #! Add paths for any dependent apps defined for this cluster
       #@ if 'dependent-apps' in cluster:
