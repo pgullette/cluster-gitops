@@ -66,6 +66,54 @@ globals:
       dependent-apps:
         - pinniped-supervisor
 
+    tap-cluster:
+      #########################################################################
+      # optional - if not defined, this cluster will use the same tap_version
+      # defined at the globals level
+      # this can be used to have a cluster alone use a specific version of tap
+      # NOTE: this should be used for testing only, and commented back out
+      # to use the globals.tap_version once testing is complete
+      #########################################################################
+      # cluster_tap_version: 1.12.0
+
+      #########################################################################
+      # optional - if not defined, this cluster will use the same branch as
+      # defined in tmc for the mako-gitops repo
+      # this can be used to have a cluster alone follow a different branch
+      # rather than the entire clustergroup
+      #########################################################################
+      # cluster_branch: different-branch
+
+      #########################################################################
+      # optional - if not defined, subpath will be the same name as cluster name
+      # define the subpath where this cluster will look for all of its apps
+      # if defined, result will be kapp/clusters/<base_cluster_subpath>
+      #########################################################################
+      # base_cluster_subpath: different-path
+
+      #########################################################################
+      # turn on the custom app for this cluster
+      # if enabled, an app will be deployed that watches 
+      # kapp/clusters/<base_cluster_subpath>/custom
+      #########################################################################
+      # enable_custom_app: "yes"
+          
+      #########################################################################
+      # optional
+      # list of apps from kapp/apps to install upon cluster creation
+      #########################################################################
+      base-apps: []
+        # - tap-sync
+        # - cluster-secrets
+      
+      #########################################################################
+      # optional
+      # list of apps from kapp/apps to install after base-apps
+      # use this if apps have some dependency on a base-app
+      #########################################################################
+      dependent-apps:
+        - pinniped-supervisor
+
 pinniped:
   supervisor:
     fqdn: pinniped.tap.zd25c130e.shepherd.lease # fqdn for supervisor
