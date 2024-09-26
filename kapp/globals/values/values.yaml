@@ -112,8 +112,8 @@ globals:
       # list of apps from kapp/apps to install after base-apps
       # use this if apps have some dependency on a base-app
       #########################################################################
-      dependent-apps: []
-      #   - pinniped-supervisor
+      dependent-apps:
+        - pinniped-concierge
 
 pinniped:
   supervisor:
