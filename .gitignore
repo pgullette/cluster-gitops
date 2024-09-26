@@ -1,1 +1,2 @@
 scripts/k8s-resources.yaml
+*.decrypted*
