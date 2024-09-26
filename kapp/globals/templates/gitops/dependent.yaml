@@ -36,6 +36,9 @@
 #@
 #@   return cluster_branch
 #@ end
+#@
+#! Only deploy the dependent app if there some dependent apps to install
+#@ if/end 'dependent-apps' in cluster and cluster['dependent-apps']:
 ---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
