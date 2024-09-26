@@ -82,9 +82,10 @@ spec:
 
   deploy:
   - kapp: {}
----
+
 #! Deploy separate tap-sync app if needed
 #@ if/end 'base-apps' in cluster and 'tap-sync' in cluster['base-apps']:
+---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
