@@ -11,4 +11,4 @@ spec:
     certificateAuthorityDataSource:
       kind: Secret
       name: pinniped-supervisor-tls-cert
-      key: tls.crt
+      key: ca.crt
