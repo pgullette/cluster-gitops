@@ -117,6 +117,6 @@ globals:
 
 pinniped:
   supervisor:
-    fqdn: pinniped.tap.z93a618d7.shepherd.lease # fqdn for supervisor
+    fqdn: pinniped.tap.zedc45fb2.shepherd.lease # fqdn for supervisor
 
   concierge: {}
