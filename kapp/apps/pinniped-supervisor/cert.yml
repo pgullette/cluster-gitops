@@ -8,6 +8,7 @@ metadata:
 spec:
   dnsNames:
   - #@ data.values.pinniped.supervisor.fqdn
+  - paul.madeup.domain
   issuerRef:
     kind: ClusterIssuer
     name: tap-ingress-selfsigned
