@@ -1,0 +1,17 @@
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: splunk-operator-app
+  namespace: cluster-gitops
+spec:
+  serviceAccountName: cluster-gitops
+  syncPeriod: 1d
+  fetch:
+  - http:
+      url: https://github.com/splunk/splunk-operator/releases/download/2.6.1/splunk-operator-cluster.yaml
+
+  template:
+  - ytt: {}
+
+  deploy:
+  - kapp: {}
