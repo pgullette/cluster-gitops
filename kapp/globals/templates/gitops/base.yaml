@@ -42,7 +42,8 @@
 #@         continue
 #@       end
 #@
-#@     paths.push('apps/{}'.format(app))
+#@       paths.push('apps/{}'.format(app))
+#@     end
 #@   end
 #@
 #@   return paths
