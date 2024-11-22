@@ -24,6 +24,29 @@
 #@
 #@   return cluster_branch
 #@ end
+#@
+#@ def get_cluster_paths():
+#@   paths = ['globals/values']
+#@
+#@   #! Add specific subpath if defined
+#@   if/end 'base_cluster_subpath' in cluster:
+#@     paths.push('clusters/{}/base'.format(cluster.base_cluster_subpath))
+#@
+#@   #! Add paths for any base apps defined for this cluster
+#@   if 'base-apps' in cluster:
+#@     for app in cluster['base-apps']:
+#@
+#@       #! tap-sync will be its own app below
+#@       if app == 'tap-sync':
+#@         continue
+#@       end
+#@
+#@     paths.push('apps/{}'.format(app))
+#@   end
+#@
+#@   return paths
+#@ end
+#@
 ---
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
@@ -49,31 +72,16 @@ spec:
       age: 
         privateKeysSecretRef: 
           name: age-key
+      #! specify global values path, any base apps paths defined
+      #! and any specific subpath if defined
+      paths: #@ get_cluster_paths()
           
   - ytt:
       ignoreUnknownComments: true # allow regular comments with just a #
 
       #! specify global values path, any base apps paths defined
       #! and any specific subpath if defined
-      paths:
-      - globals/values
-
-      #! Add specific subpath if defined
-      #@ if/end 'base_cluster_subpath' in cluster:
-      - #@ 'clusters/{}/base'.format(cluster.base_cluster_subpath)
-
-      #! Add paths for any base apps defined for this cluster
-      #@ if 'base-apps' in cluster:
-      #@   for app in cluster['base-apps']:
-      #@
-      #!     tap-sync will be its own app below
-      #@     if app == 'tap-sync':
-      #@       continue
-      #@     end
-      #@
-      - #@ 'apps/{}'.format(app)
-      #@   end
-      #@ end
+      paths: #@ get_cluster_paths()
 
       valuesFrom:
         #! provided by configmap containing cluster values
@@ -110,6 +118,9 @@ spec:
       age: 
         privateKeysSecretRef: 
           name: age-key
+      paths:
+        - globals/values
+        - apps/tap-sync
           
   - ytt:
       ignoreUnknownComments: true # allow regular comments with just a #
