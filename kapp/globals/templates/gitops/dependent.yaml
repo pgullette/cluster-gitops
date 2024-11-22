@@ -62,10 +62,10 @@ spec:
         name: cluster-gitops-creds
 
   template:
-  - sops: 
-      age: 
-        privateKeysSecretRef: 
-          name: age-key
+  # - sops: 
+  #     age: 
+  #       privateKeysSecretRef: 
+  #         name: age-key
           
   - ytt:
       ignoreUnknownComments: true # allow regular comments with just a #
