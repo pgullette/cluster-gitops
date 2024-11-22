@@ -29,8 +29,9 @@
 #@   paths = ['globals/values']
 #@
 #@   #! Add specific subpath if defined
-#@   if/end 'base_cluster_subpath' in cluster:
+#@   if 'base_cluster_subpath' in cluster:
 #@     paths.push('clusters/{}/base'.format(cluster.base_cluster_subpath))
+#@   end
 #@
 #@   #! Add paths for any base apps defined for this cluster
 #@   if 'base-apps' in cluster:
