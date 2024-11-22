@@ -23,6 +23,9 @@ spec:
         age:
           privateKeysSecretRef:
             name: age-key
+      paths:
+        - globals/values
+        - globals/templates/gitops
 
     - ytt:
         ignoreUnknownComments: true
