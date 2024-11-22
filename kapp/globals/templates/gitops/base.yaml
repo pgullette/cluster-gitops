@@ -30,7 +30,7 @@
 #@
 #@   #! Add specific subpath if defined
 #@   if 'base_cluster_subpath' in cluster:
-#@     paths.push('clusters/{}/base'.format(cluster.base_cluster_subpath))
+#@     paths.append('clusters/{}/base'.format(cluster.base_cluster_subpath))
 #@   end
 #@
 #@   #! Add paths for any base apps defined for this cluster
@@ -42,7 +42,7 @@
 #@         continue
 #@       end
 #@
-#@       paths.push('apps/{}'.format(app))
+#@       paths.append('apps/{}'.format(app))
 #@     end
 #@   end
 #@
